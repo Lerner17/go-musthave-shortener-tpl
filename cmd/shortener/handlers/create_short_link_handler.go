@@ -17,8 +17,11 @@ func CreateShortUrlHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&body)
 
 	if err != nil || body.URL == "" {
-		fmt.Println("ERROR!")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Bad request"))
+		return
 	}
 	key, _ := db.Insert(body.URL)
+	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte(fmt.Sprintf("http://localhost:8080/%s", key)))
 }

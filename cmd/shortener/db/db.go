@@ -2,7 +2,6 @@ package db
 
 import (
 	"errors"
-	"fmt"
 	"math/rand"
 	"sync"
 	"time"
@@ -57,9 +56,7 @@ func GetInstance() *db {
 }
 
 func (d *db) Find(key string) (string, bool) {
-	fmt.Println("try to find")
 	if result, ok := d.state[key]; ok {
-		fmt.Println(ok)
 		return result, ok
 	}
 	return "", false
@@ -69,8 +66,6 @@ func (d *db) InsertWithKey(key, value string) (string, error) {
 	if key == "" || value == "" {
 		return "", errors.New("Empty key or value")
 	}
-	fmt.Println(key)
-	fmt.Println(value)
 	d.state[key] = value
 	return value, nil
 }
