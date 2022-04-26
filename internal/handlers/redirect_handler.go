@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	database "github.com/Lerner17/shortener/cmd/shortener/db"
+	database "github.com/Lerner17/shortener/internal/db"
 	"net/http"
 	"strings"
 )

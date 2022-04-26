@@ -8,14 +8,14 @@
 package main
 
 import (
-	"github.com/Lerner17/shortener/cmd/shortener/handlers"
+	handlers2 "github.com/Lerner17/shortener/internal/handlers"
 	"log"
 	"net/http"
 )
 
 func main() {
-	http.HandleFunc("/createShortURL", handlers.CreateShortUrlHandler)
-	http.HandleFunc("/", handlers.RedirectHandler)
+	http.HandleFunc("/createShortURL", handlers2.CreateShortUrlHandler)
+	http.HandleFunc("/", handlers2.RedirectHandler)
 	server := &http.Server{
 		Addr: "127.0.0.1:8080",
 	}

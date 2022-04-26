@@ -3,7 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	database "github.com/Lerner17/shortener/cmd/shortener/db"
+	database "github.com/Lerner17/shortener/internal/db"
 	"net/http"
 )
 
