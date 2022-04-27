@@ -2,34 +2,14 @@ package routes
 
 import (
 	"fmt"
-	"github.com/Lerner17/shortener/internal/db"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/Lerner17/shortener/internal/db"
+	"github.com/Lerner17/shortener/internal/helpers"
+	"github.com/stretchr/testify/assert"
 )
-
-func testRequest(t *testing.T, ts *httptest.Server, method, path string) (*http.Response, string) {
-	req, err := http.NewRequest(method, ts.URL+path, nil)
-	require.NoError(t, err)
-
-	client := &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-	resp, err := client.Do(req)
-	require.NoError(t, err)
-
-	respBody, err := ioutil.ReadAll(resp.Body)
-	require.NoError(t, err)
-
-	defer resp.Body.Close()
-
-	return resp, string(respBody)
-}
 
 func TestSuccessRouter(t *testing.T) {
 	r := NewRouter()
@@ -46,7 +26,7 @@ func TestSuccessRouter(t *testing.T) {
 	}
 
 	for key, value := range urlKeyValue {
-		resp, _ := testRequest(t, ts, "GET", fmt.Sprintf("/%s", value))
+		resp, _ := helpers.TestRequest(t, ts, "GET", fmt.Sprintf("/%s", value))
 		assert.Equal(t, http.StatusTemporaryRedirect, resp.StatusCode)
 		assert.Equal(t, key, resp.Header.Get("Location"))
 	}
@@ -57,6 +37,6 @@ func TestUndefinedRouter(t *testing.T) {
 	ts := httptest.NewServer(r)
 	defer ts.Close()
 
-	resp, _ := testRequest(t, ts, "GET", fmt.Sprintf("/%s", "abc331"))
+	resp, _ := helpers.TestRequest(t, ts, "GET", fmt.Sprintf("/%s", "abc331"))
 	assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
 }
